@@ -4,7 +4,7 @@ using DataStructures.Library.Nodes;
 namespace DataStructures.Library.Structures
 {
     /// <summary>
-    /// Custom implementation of Linked Listfor educational purposes
+    /// Custom implementation of Linked List for educational purposes
     /// </summary>
     /// <typeparam name="T">Represents the type of elements in list</typeparam>
     public class OneSidedLinkedList<T>
@@ -61,7 +61,7 @@ namespace DataStructures.Library.Structures
         /// </summary>
         /// <param name="element">Element to Add</param>
         /// <returns>Always true</returns>
-        public bool Add(T element)
+        public void Add(T element)
         {
             if (_head == null)
             {
@@ -78,27 +78,25 @@ namespace DataStructures.Library.Structures
                 }
             }
             Count++;
-            return true;
         }
         /// <summary>
-        /// Find element in list by it's value. Not sure how it works on custom types
+        /// Find element by given expression in list.
         /// </summary>
-        /// <param name="value">Value of element to find</param>
-        /// <returns>Element with specified value</returns>
-        public T? Find(T value)
+        /// <param name="expression">Predicate to find element</param>
+        /// <returns>An element  satisfying the expression</returns>
+        public T? Find(Predicate<T> expression)
         {
             if (_head == null)
                 return default;
             LinkedListElement<T>? temp = _head;
             while (temp != null)
             {
-                if (temp.Data?.Equals(value) ?? false)
+                if(expression(temp.Data))
                     return temp.Data;
                 temp = temp.Next;
             }
             return default;
         }
-        //TODO: add predicate to find elements
         /// <summary>
         /// Remove element in list by it's value. Not sure how it works on custom types
         /// </summary>
@@ -137,9 +135,15 @@ namespace DataStructures.Library.Structures
         /// Remove all elements.
         /// </summary>
         /// <param name="element"></param>
-        public void RemoveAll(T element)
+        public void RemoveAll(Predicate<T> expression)
         {
-            while (Remove(element)) ;
+            T? temp = Find(expression);
+            while (!EqualityComparer<T>.Default.Equals(temp, default))
+            {
+                if(temp != null)
+                Remove(temp);
+                temp = Find(expression);
+            }
         }
         public void Clear()
         {
