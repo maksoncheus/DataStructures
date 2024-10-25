@@ -6,13 +6,12 @@ namespace DataStructures.Client
     {
         static void Main()
         {
-            StackOnList<int> stack = new([1,2,3,4,5,6,7,8]);
-            Console.WriteLine(stack);
-            stack.Push(9);
-            Console.WriteLine(stack);
-            Console.WriteLine(stack.Peek());
-            Console.WriteLine(stack.Pop());
-            Console.WriteLine(stack);
+            QueueOnList<int> queue = new QueueOnList<int>([1,2,3,4,5,6,7,8,9]);
+            Console.WriteLine(queue);
+            queue.Enqueue(10);
+            Console.WriteLine(queue);
+            queue.Dequeue();
+            Console.WriteLine(queue);
         }
     }
 }

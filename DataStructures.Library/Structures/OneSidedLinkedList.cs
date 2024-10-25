@@ -60,7 +60,6 @@ namespace DataStructures.Library.Structures
         /// Add new element to List
         /// </summary>
         /// <param name="element">Element to Add</param>
-        /// <returns>Always true</returns>
         public void Add(T element)
         {
             if (_head == null)
