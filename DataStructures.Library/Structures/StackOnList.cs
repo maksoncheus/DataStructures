@@ -8,7 +8,7 @@ namespace DataStructures.Library.Structures
     /// <typeparam name="T">Represents the type of elements in stack</typeparam>
     public class StackOnList<T>
     {
-        private LinkedListElement<T>? _head = null;
+        private OneSidedLinkedListElement<T>? _head = null;
         public int Count { get; private set; } = 0;
         public bool IsEmpty { get => Count == 0; }
 
@@ -28,11 +28,11 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
             {
-                _head = new LinkedListElement<T>(element);
+                _head = new OneSidedLinkedListElement<T>(element);
             }
             else
             {
-                LinkedListElement<T> temp = new(element)
+                OneSidedLinkedListElement<T> temp = new(element)
                 {
                     Next = _head
                 };
@@ -48,7 +48,7 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
                 return default;
-            LinkedListElement<T>? temp = _head;
+            OneSidedLinkedListElement<T>? temp = _head;
             _head = _head.Next;
             return temp.Data;
         }
@@ -73,7 +73,7 @@ namespace DataStructures.Library.Structures
         /// <returns>String representation of stack</returns>
         public override string ToString()
         {
-            LinkedListElement<T>? temp = _head;
+            OneSidedLinkedListElement<T>? temp = _head;
             if (temp == null)
                 return "Пустой список";
             StringBuilder sb = new();

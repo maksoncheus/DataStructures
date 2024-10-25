@@ -9,8 +9,8 @@ namespace DataStructures.Library.Structures
     /// <typeparam name="T">Represents the type of elements in queue</typeparam>
     public class QueueOnList<T>
     {
-        private LinkedListElement<T>? _head = null;
-        private LinkedListElement<T>? _tail = null;
+        private OneSidedLinkedListElement<T>? _head = null;
+        private OneSidedLinkedListElement<T>? _tail = null;
         public int Count { get; private set; } = 0;
         public bool IsEmpty { get => Count == 0; }
         public QueueOnList() { }
@@ -29,7 +29,7 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
             {
-                _head = new LinkedListElement<T>(element);
+                _head = new OneSidedLinkedListElement<T>(element);
                 _tail = _head;
             }
             else
@@ -37,7 +37,7 @@ namespace DataStructures.Library.Structures
                 //_tail can't be null here, but VS don't know about it ;D
                 if (_tail != null)
                 {
-                    _tail.Next = new LinkedListElement<T>(element);
+                    _tail.Next = new OneSidedLinkedListElement<T>(element);
                     _tail = _tail.Next;
                 }
             }
@@ -51,7 +51,7 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
                 return default;
-            LinkedListElement<T>? temp = _head;
+            OneSidedLinkedListElement<T>? temp = _head;
             _head = _head.Next;
             return temp.Data;
         }
@@ -67,7 +67,7 @@ namespace DataStructures.Library.Structures
         /// <returns>String representation of queue</returns>
         public override string ToString()
         {
-            LinkedListElement<T>? temp = _head;
+            OneSidedLinkedListElement<T>? temp = _head;
             if (temp == null)
                 return "Пустой список";
             StringBuilder sb = new();

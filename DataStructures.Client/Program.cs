@@ -6,12 +6,14 @@ namespace DataStructures.Client
     {
         static void Main()
         {
-            QueueOnList<int> queue = new QueueOnList<int>([1,2,3,4,5,6,7,8,9]);
-            Console.WriteLine(queue);
-            queue.Enqueue(10);
-            Console.WriteLine(queue);
-            queue.Dequeue();
-            Console.WriteLine(queue);
+            TwoSidedLinkedList<int> list = new([1,2,3,4,5]);
+            Console.WriteLine(list);
+            list.Add(6);
+            Console.WriteLine(list);
+            list.Remove(list.Find(x => x == 6));
+            list.Remove(list.Find(x => x == 1));
+            list.Remove(list.Find(x => x == 3));
+            Console.WriteLine(list);
         }
     }
 }

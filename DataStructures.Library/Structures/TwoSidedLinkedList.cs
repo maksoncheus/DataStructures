@@ -1,5 +1,9 @@
-﻿using System.Text;
-using DataStructures.Library.Nodes;
+﻿using DataStructures.Library.Nodes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataStructures.Library.Structures
 {
@@ -7,10 +11,10 @@ namespace DataStructures.Library.Structures
     /// Custom implementation of Linked List for educational purposes
     /// </summary>
     /// <typeparam name="T">Represents the type of elements in list</typeparam>
-    public class OneSidedLinkedList<T>
+    public class TwoSidedLinkedList<T>
     {
-        private OneSidedLinkedListElement<T>? _head = null;
-        private OneSidedLinkedListElement<T>? _tail = null;
+        private TwoSidedLinkedListElement<T>? _head = null;
+        private TwoSidedLinkedListElement<T>? _tail = null;
         public int Count { get; private set; } = 0;
         public bool IsEmpty { get => Count == 0; }
         /// <summary>
@@ -22,12 +26,12 @@ namespace DataStructures.Library.Structures
         {
             get
             {
-                OneSidedLinkedListElement<T> temp = GetElementAt(index);
+                TwoSidedLinkedListElement<T> temp = GetElementAt(index);
                 return temp.Data;
             }
             set
             {
-                OneSidedLinkedListElement<T> temp = GetElementAt(index);
+                TwoSidedLinkedListElement<T> temp = GetElementAt(index);
                 temp.Data = value;
             }
         }
@@ -38,18 +42,18 @@ namespace DataStructures.Library.Structures
         /// <returns>Element at specified index</returns>
         /// <exception cref="ArgumentOutOfRangeException">Index was too small or too big</exception>
         /// <exception cref="ArgumentNullException">Can't explain... Only to remove the warning from the VS</exception>
-        private OneSidedLinkedListElement<T> GetElementAt(int index)
+        private TwoSidedLinkedListElement<T> GetElementAt(int index)
         {
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException(nameof(index));
-            OneSidedLinkedListElement<T>? temp = _head;
+            TwoSidedLinkedListElement<T>? temp = _head;
             for (int i = 0; i < index; i++, temp = temp?.Next) ;
             if (temp == null)
                 throw new ArgumentNullException(nameof(index));
             return temp;
         }
-        public OneSidedLinkedList() { }
-        public OneSidedLinkedList(IEnumerable<T> values)
+        public TwoSidedLinkedList() { }
+        public TwoSidedLinkedList(IEnumerable<T> values)
         {
             foreach (T value in values)
             {
@@ -64,7 +68,7 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
             {
-                _head = new OneSidedLinkedListElement<T>(element);
+                _head = new TwoSidedLinkedListElement<T>(element);
                 _tail = _head;
             }
             else
@@ -72,7 +76,10 @@ namespace DataStructures.Library.Structures
                 //_tail can't be null here, but VS don't know about it ;D
                 if (_tail != null)
                 {
-                    _tail.Next = new OneSidedLinkedListElement<T>(element);
+                    _tail.Next = new TwoSidedLinkedListElement<T>(element)
+                    {
+                        Previous = _tail
+                    };
                     _tail = _tail.Next;
                 }
             }
@@ -87,10 +94,10 @@ namespace DataStructures.Library.Structures
         {
             if (_head == null)
                 return default;
-            OneSidedLinkedListElement<T>? temp = _head;
+            TwoSidedLinkedListElement<T>? temp = _head;
             while (temp != null)
             {
-                if(expression(temp.Data))
+                if (expression(temp.Data))
                     return temp.Data;
                 temp = temp.Next;
             }
@@ -107,17 +114,21 @@ namespace DataStructures.Library.Structures
                 return false;
             if (_head.Data?.Equals(element) ?? false)
             {
+                if(_head.Next != null)
+                    _head.Next.Previous = null;
                 _head = _head.Next;
                 Count--;
                 return true;
             }
-            OneSidedLinkedListElement<T>? temp = _head;
+            TwoSidedLinkedListElement<T>? temp = _head;
             while (temp != null)
             {
                 if (temp.Next != null)
                 {
                     if (temp.Next.Data?.Equals(element) ?? false)
                     {
+                        if(temp.Next.Next != null)
+                            temp.Next.Next.Previous = temp;
                         temp.Next = temp.Next.Next;
                         if (temp.Next == null)
                             _tail = temp;
@@ -139,8 +150,8 @@ namespace DataStructures.Library.Structures
             T? temp = Find(expression);
             while (!EqualityComparer<T>.Default.Equals(temp, default))
             {
-                if(temp != null)
-                Remove(temp);
+                if (temp != null)
+                    Remove(temp);
                 temp = Find(expression);
             }
         }
@@ -156,13 +167,13 @@ namespace DataStructures.Library.Structures
         /// <returns>String representation of list</returns>
         public override string ToString()
         {
-            OneSidedLinkedListElement<T>? temp = _head;
+            TwoSidedLinkedListElement<T>? temp = _head;
             if (temp == null)
                 return "Пустой список";
             StringBuilder sb = new();
             while (temp != null)
             {
-                sb.Append((temp?.Data?.ToString() ?? "null") + " --> ");
+                sb.Append((temp?.Data?.ToString() ?? "null") + " <--> ");
                 temp = temp?.Next;
             }
             sb.Append("null");
